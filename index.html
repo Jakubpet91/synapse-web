@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Synapse | Profesionální klinický přepis a AI syntéza sezení pro lékaře a psychology</title>
   <meta name="description" content="Klinická webová aplikace pro psychology, psychoterapeuty a lékaře. Verbatim 1:1 doslovný přepis, strukturované klinické zápisy (SOAP, BIRP, KBT), Zero-Knowledge šifrování a okamžitá synchronizace mobilu s PC.">
-  <meta name="keywords" content="klinický přepis, lékařský diktát, psychoterapie zápis, SOAP formát, BIRP, zero-knowledge šifrování, PII anonymizace, lékařský software, psychiatrie">
+  <meta name="keywords" content="klinický přepis, lékařský diktát, psychoterapie zápis, SOAP formát, BIRP, zero-knowledge šifrování, lékařský software, psychiatrie">
   
   <!-- Open Graph / Meta -->
   <meta property="og:type" content="website">
@@ -65,7 +65,7 @@
   <!-- ========================================== -->
   <aside aria-label="Oznámení" class="bg-gradient-to-r from-sage-900 via-sage-800 to-sage-950 text-white text-xs py-2 px-4 text-center font-medium border-b border-sage-700/50 flex items-center justify-center space-x-2">
     <span class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px] uppercase tracking-wider border border-emerald-400/30">NOVINKA V3.0</span>
-    <span>Vyzkoušejte nové šablony SOAP & BIRP a multi-locale PII filtry pro CZ, SK a PL.</span>
+    <span>Vyzkoušejte nové šablony SOAP & BIRP a okamžitou synchronizaci sezení.</span>
     <a href="#simulator" class="underline hover:text-emerald-200 font-semibold transition-colors ml-1 hidden sm:inline">Vyzkoušet v simulátoru &rarr;</a>
   </aside>
 
@@ -345,7 +345,7 @@
           Vyzkoušejte si, jak Synapse promění mluvené slovo v klinický zápis
         </h2>
         <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400">
-          Zvolte klinický případ níže, spusťte simulaci audia, přepínejte mezi SOAP, BIRP nebo lékařskou zprávou a sledujte okamžitou neutralizaci citlivých údajů (PII).
+          Zvolte klinický případ níže, spusťte simulaci audia, přepínejte mezi SOAP, BIRP nebo lékařskou zprávou a sledujte okamžitou strukturovanou AI syntézu.
         </p>
       </div>
 
@@ -422,7 +422,7 @@
         <!-- Split Workspace Simulator Body -->
         <div class="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-sage-200 dark:divide-sage-800 min-h-[380px]">
           
-          <!-- Left Column: Raw Speech & PII Anonymization -->
+          <!-- Left Column: Raw Speech Verbatim -->
           <div class="p-5 sm:p-6 space-y-4 flex flex-col justify-between">
             <div class="space-y-3">
               <div class="flex items-center justify-between">
@@ -431,12 +431,10 @@
                   <span>1. Doslovný přepis (Verbatim)</span>
                 </span>
 
-                <!-- PII Toggle Switch -->
-                <label class="flex items-center space-x-2 cursor-pointer select-none">
-                  <input id="simulatorPiiToggle" type="checkbox" checked class="sr-only peer">
-                  <div class="w-8 h-4 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-600 relative"></div>
-                  <span class="text-[11px] font-semibold text-slate-600 dark:text-slate-300">PII filtrace</span>
-                </label>
+                <span class="inline-flex items-center space-x-1.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>100% doslovný text</span>
+                </span>
               </div>
 
               <!-- Raw Text Box -->
@@ -447,7 +445,7 @@
 
             <div class="p-3 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-center space-x-2">
               <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-              <span>Pre-Flight kontrola proběhla na vašem zařízení. Osobní identifikátory neopustily prohlížeč.</span>
+              <span>Zero-Knowledge šifrování na vašem zařízení. Plný soulad s GDPR čl. 9.</span>
             </div>
           </div>
 
@@ -561,8 +559,8 @@
             <div class="flex items-center space-x-3">
               <span class="w-8 h-8 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center shrink-0">3</span>
               <div>
-                <h4 class="text-sm font-bold text-slate-900 dark:text-white">3. PII anonymizace a AI syntéza</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Výběr šablony (SOAP, KBT) s garancí ochrany dat</p>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white">3. Asistovaná AI syntéza</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Výběr šablony (SOAP, BIRP, KBT) s garancí ochrany dat</p>
               </div>
             </div>
           </button>
@@ -640,14 +638,14 @@
           </p>
         </div>
 
-        <!-- Feature 2: Multi-Locale PII Guardrails -->
+        <!-- Feature 2: Flexibilní klinické šablony & formáty -->
         <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#131d1a] border border-sage-200/90 dark:border-sage-800/90 shadow-xs hover:shadow-md transition-shadow space-y-3">
           <div class="w-12 h-12 rounded-2xl bg-sage-100 dark:bg-sage-900/60 text-sage-800 dark:text-sage-300 flex items-center justify-center">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           </div>
-          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Multi-Locale PII Guardrails (CZ, SK, PL)</h3>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Flexibilní klinické šablony (SOAP, BIRP, Vlastní)</h3>
           <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            Před odesláním do AI probíhá deterministická neutralizace: Rodná čísla s Modulo 11 kontrolou, polský PESEL, bankovní účty ČNB / NBP, IBAN ISO 13616 a skloňování českých příjmení v 1.–7. pádě.
+            Vyberte si přednastavené medicínské standardy SOAP, BIRP a lékařskou zprávu, nebo si snadno vytvořte vlastní osnovu zápisu na míru vašemu terapeutickému či lékařskému zaměření.
           </p>
         </div>
 
@@ -975,7 +973,7 @@
             </li>
             <li class="flex items-start space-x-2.5">
               <span class="w-5 h-5 rounded-full bg-sage-800 dark:bg-emerald-700 text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span>
-              <span><strong>Pre-Flight PII anonymizace:</strong> Z prohlížeče odchází pouze anonymizovaný text; rodná čísla a jména jsou nahrazena neutrálními placeholdery.</span>
+              <span><strong>Podnikové Zero-Retention API:</strong> Data odesílaná k AI syntéze jsou chráněna podnikovým režimem bez ukládání na serverech a bez trénování modelů.</span>
             </li>
             <li class="flex items-start space-x-2.5">
               <span class="w-5 h-5 rounded-full bg-sage-800 dark:bg-emerald-700 text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span>
@@ -1174,7 +1172,7 @@
             <svg class="faq-chevron w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </button>
           <div class="faq-content p-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-sage-100 dark:border-sage-850">
-            <strong>Jednoznačně NE.</strong> Využíváme výhradně placená podniková API rozhraní (Enterprise Tier), která smluvně garantují doložku Zero-Data-Retention. Vaše vstupy nejsou ukládány na servery poskytovatelů modelů ani používány k jejich dalšímu trénování. Navíc před jakýmkoliv odesláním do AI probíhá klientská anonymizace PII.
+            <strong>Jednoznačně NE.</strong> Využíváme výhradně placená podniková API rozhraní (Enterprise Tier), která smluvně garantují doložku Zero-Data-Retention. Vaše vstupy nejsou ukládány na servery poskytovatelů modelů ani používány k jejich dalšímu trénování. Zpracování probíhá výhradně v operační paměti za účelem vygenerování strukturovaného zápisu.
           </div>
         </div>
 

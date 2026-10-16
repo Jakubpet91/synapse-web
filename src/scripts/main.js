@@ -81,7 +81,6 @@ const CLINICAL_CASES = {
     diagnosis: 'F41.0 Panická porucha, F40.00 Agorafobie bez panické poruchy',
     audioDuration: '03:14',
     rawTranscript: `Dobrý den pane doktore, přicházím na kontrolu po čtrnácti dnech. Ty ataky se objevily znova hlavně v úterý, když jsem stál v tramvaji číslo 9 na Andělu. Začalo mi bušit srdce, pocit dušení, musel jsem hned na další zastávce vystoupit. Bydlím stále na adrese Úvoz 24 v Brně a včera jsem si musel vzít Lexaurin půl tablety. Zkoušel jsem to dechové cvičení čtyři doby nádechu a sedm zadržení dechu, co jsme trénovali minule, a to mi docela pomohlo stáhnout tu paniku z devítky na pětku. Moje rodné číslo je 820614/1234, pokud to potřebujete do té zprávy pro praktika MUDr. Černého.`,
-    redactedTranscript: `Dobrý den pane doktore, přicházím na kontrolu po čtrnácti dnech. Ty ataky se objevily znova hlavně v úterý, když jsem stál v tramvaji číslo 9 na <span class="bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 px-1 py-0.5 rounded font-mono text-[11px] font-bold border border-amber-300 dark:border-amber-800">[LOKALITA: Zastávka MHD]</span>. Začalo mi bušit srdce, pocit dušení, musel jsem hned na další zastávce vystoupit. Bydlím stále na adrese <span class="bg-rose-100 dark:bg-rose-950/80 text-rose-800 dark:text-rose-300 px-1 py-0.5 rounded font-mono text-[11px] font-bold border border-rose-300 dark:border-rose-800">[BYDLIŠTĚ / ADRESA]</span> a včera jsem si musel vzít anxiolytikum půl tablety. Zkoušel jsem to dechové cvičení 4-7-8, co jsme trénovali minule, a to mi pomohlo stáhnout paniku z 9/10 na 5/10. Moje rodné číslo je <span class="bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 px-1 py-0.5 rounded font-mono text-[11px] font-bold border border-emerald-300 dark:border-emerald-800">[RODNÉ ČÍSLO: MOD11 OK]</span>, pokud to potřebujete do zprávy pro <span class="bg-indigo-100 dark:bg-indigo-950/80 text-indigo-800 dark:text-indigo-300 px-1 py-0.5 rounded font-mono text-[11px] font-bold border border-indigo-300 dark:border-indigo-800">[OŠETŘUJÍCÍ LÉKAŘ]</span>.`,
     soap: `### S (Subjektivní údaje)
 - Klient referuje recidivu panické ataky v MHD (Anděl, tramvaj č. 9) s typickou vegetativní symptomatologií (tachykardie, dyspnoe, anticipační tíseň).
 - Pozitivní odezva na KBT nácvik: dechová kotva (technika 4-7-8) vedla k subjektivnímu poklesu distresu ze škály 9/10 na 5/10.
@@ -125,7 +124,6 @@ Stav kompenzován, doporučena pokračující psychoterapeutická péče KBT sm�
     diagnosis: 'F32.1 Středně těžká depresivní epizoda',
     audioDuration: '02:40',
     rawTranscript: `Dobrý den paní doktorko, beru ten Sertralin padesátku už třetí týden. Ranní nevolnosti už naštěstí přešly a cítím, že ten nejhorší kámen na hrudi povolil. Pořád se ale budím kolem čtvrté ráno a nemůžu zabrat, myšlenky na práci v bance mě děsí. Chuť k jídlu se trochu zlepšila, zhubla jsem od minule jen kilo. Bydlíme pořád v Praze 6 na Břevnově. Ráda bych věděla, jestli nezvedneme dávku, jak jsme minule říkali, aby mi to pomohlo i s tou ranní energií.`,
-    redactedTranscript: `Dobrý den paní doktorko, beru ten Sertralin 50 mg p.o. už třetí týden. Ranní nevolnosti odezněly a pacientka referuje částečnou úlevu od tíže na hrudi. Přetrvává insomnie s časným ranním probouzením kolem 4:00 s ruminacemi ohledně pracovního vytížení v <span class="bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 px-1 py-0.5 rounded font-mono text-[11px] font-bold border border-amber-300 dark:border-amber-800">[SEKTOR: Finanční služby]</span>. Chuť k jídlu stabilizována, váhový úbytek mírný. Bydliště v <span class="bg-rose-100 dark:bg-rose-950/80 text-rose-800 dark:text-rose-300 px-1 py-0.5 rounded font-mono text-[11px] font-bold border border-rose-300 dark:border-rose-800">[LOKALITA: Městská část]</span>. Zvažována titrace farmakoterapie pro posílení ranní psychomotoriky.`,
     soap: `### S (Subjektivní údaje)
 - Pacientka referuje nástup terapeutického účinku Sertralinu (50 mg 1-0-0), gastrointestinální iniciální obtíže odezněly.
 - Dominují reziduální spánkové obtíže (předčasná ranní probuzení se sklonem k ruminaci).
@@ -165,7 +163,6 @@ Doporučena titrace Sertralin na 100 mg ráno, přidán Trazodon 50-75 mg na noc
     diagnosis: 'Z73.0 Syndrom vyhoření, F43.2 Porucha přizpůsobení',
     audioDuration: '02:15',
     rawTranscript: `Minulý týden byl v práci opět šílený. Šéf mi hodil na stůl projekt za kolegu a já jsem zase nedokázal říct ne. Přišel jsem domů v devět večer, byl jsem protivný na manželku i děti a pak jsem do dvou do rána zíral do stropu. Uvědomil jsem si, jak jste říkal, že ten pocit zodpovědnosti za všechny ostatní mě úplně ničí. Chci si nastavit jasné hranice a naučit se říkat: tohle už je nad rámec mé kapacity.`,
-    redactedTranscript: `Minulý týden byl v práci opět náročný. Nadřízený delegoval projekt nepřítomného kolegy na <span class="bg-indigo-100 dark:bg-indigo-950/80 text-indigo-800 dark:text-indigo-300 px-1 py-0.5 rounded font-mono text-[11px] font-bold border border-indigo-300 dark:border-indigo-800">[ROLE: Klient]</span>, který nedokázal vymezit asertivní hranici. Následovaly pozdní návraty, tenze v rodinném prostředí s <span class="bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 px-1 py-0.5 rounded font-mono text-[11px] font-bold border border-amber-300 dark:border-amber-800">[RODINNÍ PŘÍSLUŠNÍCI]</span> a insomnie. Klient si plně uvědomuje maladaptivní schéma nadměrné zodpovědnosti a definuje cíl: nácvik asertivního odmítnutí při překročení reálné pracovní kapacity.`,
     soap: `### S (Subjektivní údaje)
 - Klient líčí selhání v asertivní komunikaci vůči nadřízenému. Reakce v podobě chronické únavy, vnitřního vzteku ventilovaného v primární rodině a sekundární nespavosti.
 - Vyjádřena silná motivace k nácviku asertivního vymezení hranic.
@@ -199,7 +196,6 @@ Práce zaměřena na maladaptivní vzorce nadměrné odpovědnosti. Proveden ná
 
 let currentCaseKey = 'case1';
 let currentFormat = 'soap';
-let isPiiRedacted = true;
 let isAudioPlaying = false;
 let audioTimer = null;
 let currentSeconds = 0;
@@ -212,7 +208,6 @@ function initClinicalSimulator() {
   const pauseIcon = document.getElementById('simulatorPauseIcon');
   const timerDisplay = document.getElementById('simulatorTimer');
   const waveBars = document.querySelectorAll('.wave-bar');
-  const piiToggle = document.getElementById('simulatorPiiToggle');
   const rawTextContainer = document.getElementById('simulatorRawText');
   const synthTextContainer = document.getElementById('simulatorSynthText');
   const caseTitle = document.getElementById('simulatorCaseTitle');
@@ -225,9 +220,9 @@ function initClinicalSimulator() {
     if (caseTitle) caseTitle.textContent = c.title;
     if (caseMeta) caseMeta.textContent = `${c.patient} | ${c.diagnosis} | Délka: ${c.audioDuration}`;
 
-    // Render Raw or PII Sanitized Text
+    // Render Raw Verbatim Text
     if (rawTextContainer) {
-      rawTextContainer.innerHTML = isPiiRedacted ? c.redactedTranscript : c.rawTranscript;
+      rawTextContainer.innerHTML = c.rawTranscript;
     }
 
     // Render Selected Synthesis Format
@@ -268,12 +263,6 @@ function initClinicalSimulator() {
       currentFormat = btn.getAttribute('data-format') || 'soap';
       renderCase();
     });
-  });
-
-  // Toggle PII
-  piiToggle?.addEventListener('change', (e) => {
-    isPiiRedacted = e.target.checked;
-    renderCase();
   });
 
   // Play / Pause Simulation
@@ -383,10 +372,10 @@ function initWorkflowStepper() {
       badge: 'REAL-TIME CLOUD SYNC'
     },
     step3: {
-      title: '3. Pre-Flight PII filtrace a AI syntéza',
-      desc: 'Klientský engine provede deterministickou kontrolu PII (rodná čísla Modulo 11, PESEL, adresy, banky) a odešle anonymizovaný text do AI. Zápis je zformátován dle zvoleného schématu (SOAP, BIRP).',
+      title: '3. Asistovaná AI syntéza sezení',
+      desc: 'Pokročilý medicínský prompt engine převede surový diktát do strukturovaného zápisu dle zvoleného schématu (SOAP, BIRP, Zpráva). Zpracování probíhá přes Enterprise API bez ukládání na serverech a bez trénování modelů.',
       image: './screenshots/ai-synthesis.png',
-      badge: 'ZERO-KNOWLEDGE AI'
+      badge: 'STRUKTUROVANÁ AI'
     },
     step4: {
       title: '4. Export do Wordu (.docx) či ambulantního softwaru',
