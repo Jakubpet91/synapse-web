@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="cs" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synapse | Profesionální klinický přepis a AI syntéza sezení pro lékaře a psychology</title>
+  <meta name="description" content="Klinická webová aplikace pro psychology, psychoterapeuty a lékaře. Verbatim 1:1 doslovný přepis, strukturované klinické zápisy (SOAP, BIRP, KBT), Zero-Knowledge šifrování a okamžitá synchronizace mobilu s PC.">
+  <meta name="keywords" content="klinický přepis, lékařský diktát, psychoterapie zápis, SOAP formát, BIRP, zero-knowledge šifrování, PII anonymizace, lékařský software, psychiatrie">
+  
+  <!-- Open Graph / Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Synapse | Klinický přepis a AI syntéza pro lékaře a terapeuty">
+  <meta property="og:description" content="Šetřete až 80 % času na administrativě v ordinaci. Verbatim doslovný přepis, SOAP zápisy, Zero-Knowledge šifrování a cross-device cloud sync.">
+  <meta property="og:image" content="/screenshots/workspace-dark.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <!-- Tailwind CSS via CDN (Full Arbitrary Value Support & Dark Mode) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            sage: {
+              50: '#f4f7f5',
+              100: '#e5ece8',
+              200: '#ccdcd3',
+              300: '#a6c4b5',
+              400: '#7ea794',
+              50: '#5c8b75',
+              600: '#466f5c',
+              700: '#38594b',
+              800: '#2f473c',
+              900: '#283b33',
+              950: '#141f1b',
+            },
+            sand: {
+              50: '#fcfbf9',
+              100: '#f7f5f0',
+              200: '#eee9df',
+              300: '#e0d7c7',
+            }
+          },
+          fontFamily: {
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body class="bg-sand-50 dark:bg-[#0c1412] text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased selection:bg-sage-200 selection:text-sage-950 dark:selection:bg-emerald-900/60 dark:selection:text-emerald-100 transition-colors duration-200">
+
+  <!-- ========================================== -->
+  <!-- 1. TOP ANNOUNCEMENT BAR                    -->
+  <!-- ========================================== -->
+  <aside aria-label="Oznámení" class="bg-gradient-to-r from-sage-900 via-sage-800 to-sage-950 text-white text-xs py-2 px-4 text-center font-medium border-b border-sage-700/50 flex items-center justify-center space-x-2">
+    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px] uppercase tracking-wider border border-emerald-400/30">NOVINKA V3.0</span>
+    <span>Vyzkoušejte nové šablony SOAP & BIRP a multi-locale PII filtry pro CZ, SK a PL.</span>
+    <a href="#simulator" class="underline hover:text-emerald-200 font-semibold transition-colors ml-1 hidden sm:inline">Vyzkoušet v simulátoru &rarr;</a>
+  </aside>
+
+  <!-- ========================================== -->
+  <!-- 2. MAIN NAVIGATION HEADER                  -->
+  <!-- ========================================== -->
+  <header class="sticky top-0 z-40 bg-white/85 dark:bg-[#0c1412]/85 glass-header border-b border-sage-200/80 dark:border-sage-800/80 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo: Psi Symbol & Title -->
+      <a href="#" class="flex items-center space-x-3 group cursor-pointer focus:outline-none" aria-label="Synapse Domů">
+        <div class="flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-sage-50 dark:bg-sage-950 border border-sage-200/90 dark:border-sage-800/90 shadow-xs group-hover:scale-105 transition-transform">
+          <svg class="w-6 h-6 sm:w-7 sm:h-7 text-sage-800 dark:text-emerald-300 fill-current" viewBox="55 25 290 275" aria-hidden="true">
+            <path d="m217.79 169.05q25.199 0 38.169-8.5231 13.155-8.5231 17.416-20.752 4.4448-12.229 5.7425-40.763 1.2972-31.684 14.082-47.062 12.97-15.564 42.43-15.564v7.0409q-10.561 0.74103-14.452 8.3378-3.705 7.4114-3.705 31.684 0 35.575-7.5966 55.03-7.4111 19.27-30.016 31.313-22.605 12.043-62.071 12.97v58.735q0 21.678 2.4074 28.163 2.5953 6.2997 10.561 10.191 8.1528 3.8911 25.014 3.8911v6.8556h-111.54v-6.8556q16.49-0.18797 24.458-3.5206 8.1526-3.5206 10.747-10.006 2.7772-6.6702 2.7772-28.719v-58.735q-39.836-0.9259-61.885-12.785-22.049-11.858-30.016-30.943-7.7816-19.27-7.7816-55.771 0-23.346-3.5229-30.943-3.5229-7.7821-14.637-8.8938v-7.0408q18.714 0.36974 30.201 5.9292 11.488 5.5585 18.343 19.64 7.0408 14.082 7.9673 37.057 1.2972 28.349 5.3724 40.577 4.2629 12.229 17.602 20.937 13.341 8.5231 38.354 8.5231v-80.784q0-21.678-2.5953-27.978-2.4074-6.485-10.376-10.191-7.9671-3.7055-25.014-3.891v-6.8556h111.54v6.8556q-17.046 0.18798-25.014 3.891-7.9671 3.5208-10.561 10.006-2.4074 6.4851-2.4074 28.163z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center space-x-1.5">
+            <span class="text-lg sm:text-xl font-serif font-bold text-slate-900 dark:text-white tracking-tight">Synapse</span>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sage-100 dark:bg-sage-900/60 text-sage-800 dark:text-emerald-300">CLINICAL</span>
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-normal hidden sm:block">Klinický přepis & AI syntéza ordinace</p>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <a href="#funkce" class="hover:text-sage-800 dark:hover:text-white transition-colors">Klíčové funkce</a>
+        <a href="#simulator" class="hover:text-sage-800 dark:hover:text-white transition-colors">Interaktivní simulátor</a>
+        <a href="#workflow" class="hover:text-sage-800 dark:hover:text-white transition-colors">Jak to funguje</a>
+        <a href="#kalkulacka" class="hover:text-sage-800 dark:hover:text-white transition-colors">Kalkulačka úspory</a>
+        <a href="#bezpecnost" class="hover:text-sage-800 dark:hover:text-white transition-colors">Zabezpečení & GDPR</a>
+        <a href="#cenik" class="hover:text-sage-800 dark:hover:text-white transition-colors">Ceník</a>
+        <a href="#faq" class="hover:text-sage-800 dark:hover:text-white transition-colors">FAQ</a>
+      </nav>
+
+      <!-- Right Action Controls -->
+      <div class="flex items-center space-x-3">
+        <!-- Theme Toggle Button -->
+        <button
+          id="themeToggleBtn"
+          type="button"
+          class="p-2 sm:p-2.5 rounded-xl bg-sand-100 dark:bg-[#162420] text-slate-700 dark:text-slate-200 hover:bg-sand-200 dark:hover:bg-[#1f332d] transition-all cursor-pointer"
+          title="Přepnout tmavý / světlý motiv"
+          aria-label="Přepnout motiv"
+        >
+          <svg id="sunIcon" class="w-4 h-4 text-amber-400 hidden pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <svg id="moonIcon" class="w-4 h-4 text-slate-600 dark:text-slate-300 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
+        </button>
+
+        <!-- CTA Launch App -->
+        <a
+          href="https://clinical-transcribe.onrender.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden sm:inline-flex items-center space-x-2 px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-sage-800 hover:bg-sage-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white shadow-xs hover:shadow-md transition-all cursor-pointer"
+        >
+          <span>Otevřít aplikaci</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button
+          id="mobileNavToggleBtn"
+          type="button"
+          class="md:hidden p-2 rounded-xl bg-sand-100 dark:bg-[#162420] text-slate-700 dark:text-slate-200"
+          aria-label="Otevřít mobilní menu"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div id="mobileNavBackdrop" class="fixed inset-0 bg-slate-900/60 z-50 hidden backdrop-blur-xs transition-opacity"></div>
+  <div id="mobileNavDrawer" class="fixed top-0 right-0 w-72 max-w-[85vw] h-full bg-white dark:bg-[#0c1412] z-50 shadow-2xl p-6 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out border-l border-sage-200 dark:border-sage-800">
+    <div class="space-y-6">
+      <div class="flex items-center justify-between pb-4 border-b border-sage-100 dark:border-sage-850">
+        <span class="font-serif font-bold text-lg text-slate-900 dark:text-white">Menu navigace</span>
+        <button id="mobileNavCloseBtn" type="button" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <nav class="flex flex-col space-y-4 text-sm font-medium text-slate-700 dark:text-slate-200">
+        <a href="#funkce" class="hover:text-sage-800 dark:hover:text-white">Klíčové funkce</a>
+        <a href="#simulator" class="hover:text-sage-800 dark:hover:text-white">Interaktivní simulátor</a>
+        <a href="#workflow" class="hover:text-sage-800 dark:hover:text-white">Jak to funguje</a>
+        <a href="#kalkulacka" class="hover:text-sage-800 dark:hover:text-white">Kalkulačka úspory</a>
+        <a href="#bezpecnost" class="hover:text-sage-800 dark:hover:text-white">Zabezpečení & GDPR</a>
+        <a href="#cenik" class="hover:text-sage-800 dark:hover:text-white">Ceník a tarify</a>
+        <a href="#faq" class="hover:text-sage-800 dark:hover:text-white">Časté otázky (FAQ)</a>
+      </nav>
+    </div>
+    <div class="pt-6 border-t border-sage-100 dark:border-sage-850">
+      <a
+        href="https://clinical-transcribe.onrender.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="w-full flex items-center justify-center space-x-2 py-3 rounded-xl font-semibold bg-sage-800 dark:bg-emerald-600 text-white shadow-md text-sm"
+      >
+        <span>Přejít do aplikace</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 3. HERO SECTION                            -->
+  <!-- ========================================== -->
+  <section class="relative pt-12 pb-20 sm:pt-20 sm:pb-32 overflow-hidden mesh-gradient-light dark:mesh-gradient-dark">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- Top Trust Pills Badge -->
+      <div class="flex flex-wrap items-center justify-center gap-2 mb-8">
+        <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sage-100/90 dark:bg-sage-900/70 text-sage-900 dark:text-emerald-300 border border-sage-200 dark:border-sage-800 shadow-xs">
+          <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span>Zero-Knowledge AES-256-GCM šifrování</span>
+        </span>
+
+        <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/90 dark:bg-[#16231f]/90 text-slate-700 dark:text-slate-200 border border-sage-200 dark:border-sage-800 shadow-xs">
+          <svg class="w-3.5 h-3.5 text-sage-600 dark:text-sage-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>Soulad s GDPR čl. 9 a čl. 28</span>
+        </span>
+
+        <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/90 dark:bg-[#16231f]/90 text-slate-700 dark:text-slate-200 border border-sage-200 dark:border-sage-800 shadow-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>WebSockets Live Sync mobil & PC</span>
+        </span>
+      </div>
+
+      <!-- Main Editorial Headline -->
+      <div class="text-center max-w-4xl mx-auto space-y-6">
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-slate-900 dark:text-white tracking-tight leading-[1.15]">
+          Klinický přepis a asistovaná AI syntéza sezení pro <span class="italic font-normal text-sage-800 dark:text-emerald-300">lékaře a psychology</span>
+        </h1>
+        
+        <p class="text-base sm:text-xl text-slate-600 dark:text-slate-300 font-normal leading-relaxed max-w-3xl mx-auto">
+          Ušetřete <strong>až 80 % času</strong> na administrativě v ordinaci. Diktujte přirozeně do mobilu, sledujte okamžitý přenos do počítače a získejte precizně strukturovaný zápis (SOAP, BIRP, KBT) s garancí 100% soukromí bez trénování modelů na datech pacientů.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+          <a
+            href="https://clinical-transcribe.onrender.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full sm:w-auto px-7 py-3.5 rounded-2xl text-base font-bold bg-sage-800 hover:bg-sage-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center space-x-2.5 group cursor-pointer"
+          >
+            <span>Vyzkoušet zdarma (30 sezení)</span>
+            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </a>
+
+          <a
+            href="#simulator"
+            class="w-full sm:w-auto px-6 py-3.5 rounded-2xl text-base font-semibold bg-white dark:bg-[#15221e] hover:bg-sand-100 dark:hover:bg-[#1b2b26] text-slate-800 dark:text-slate-100 border border-sage-300 dark:border-sage-800 shadow-xs transition-all flex items-center justify-center space-x-2"
+          >
+            <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Interaktivní ukázka</span>
+          </a>
+        </div>
+
+        <p class="text-xs text-slate-500 dark:text-slate-400">
+          Bez nutnosti zadávat platební kartu &bull; Okamžité spuštění v prohlížeči &bull; Plně funkční i na mobilu
+        </p>
+      </div>
+
+      <!-- Hero Product Showcase Frame (Desktop Workspace & Mobile Floating Mockup) -->
+      <div class="mt-12 sm:mt-16 max-w-5xl mx-auto relative group">
+        <div class="absolute -inset-1 bg-gradient-to-r from-sage-500 to-emerald-600 rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition duration-1000"></div>
+        
+        <div class="relative rounded-2xl sm:rounded-3xl border border-sage-300/80 dark:border-sage-800/80 shadow-2xl overflow-hidden bg-white dark:bg-[#121c19]">
+          <!-- Browser top mock chrome -->
+          <div class="px-4 py-3 bg-sand-100 dark:bg-[#172521] border-b border-sage-200 dark:border-sage-800 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full bg-rose-400"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+            </div>
+            <div class="px-4 py-1 rounded-lg bg-white dark:bg-[#0c1412] text-[11px] font-mono text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-800 flex items-center space-x-1.5">
+              <svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              <span>https://clinical-transcribe.onrender.com/ (Zero-Knowledge AES-256)</span>
+            </div>
+            <div class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 flex items-center space-x-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="hidden sm:inline">Online Sync</span>
+            </div>
+          </div>
+
+          <!-- Main Desktop Screenshot -->
+          <div class="relative overflow-hidden cursor-pointer lightbox-trigger" data-img="/screenshots/workspace-dark.png" data-title="Synapse – Pracovní plocha v tmavém režimu">
+            <img
+              src="/screenshots/workspace-dark.png"
+              alt="Synapse – Hlavní pracovní plocha a kartotéka klientů v tmavém režimu"
+              class="w-full h-auto object-cover hover:scale-[1.01] transition-transform duration-500"
+              loading="eager"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4 sm:p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="text-xs sm:text-sm font-semibold text-white flex items-center space-x-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                <span>Klikněte pro zvětšení snímku obrazovky</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Mobile Device Accent Badge -->
+        <div class="hidden lg:flex absolute -bottom-8 -right-8 w-64 bg-white/95 dark:bg-[#14201c]/95 glass-header border border-sage-200 dark:border-sage-800 rounded-2xl shadow-2xl p-3.5 space-y-2.5 z-20 hover:scale-105 transition-transform cursor-pointer lightbox-trigger" data-img="/screenshots/mobile-records.png" data-title="Mobilní kartotéka Synapse na iPhonu / Androidu">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-800 dark:text-white flex items-center space-x-1.5">
+              <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+              <span>Mobilní synchronizace</span>
+            </span>
+            <span class="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">LIVE</span>
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+            Diktát zachycený v mobilu je za 1,2 s v reálném čase přenesen na monitor vašeho PC.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 4. TRUST & STATS TICKER                    -->
+  <!-- ========================================== -->
+  <section class="border-y border-sage-200/80 dark:border-sage-800/80 bg-white/60 dark:bg-[#0f1715]/60 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div>
+          <div class="text-2xl sm:text-3xl font-serif font-bold text-sage-900 dark:text-emerald-300">80 %</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Úspora času při tvorbě zápisů</div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-serif font-bold text-sage-900 dark:text-emerald-300">0 ms</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Přístup serveru k otevřeným datům</div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-serif font-bold text-sage-900 dark:text-emerald-300">100 %</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Soulad s GDPR čl. 9 a DPA čl. 28</div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-serif font-bold text-sage-900 dark:text-emerald-300">1:1 Verbatim</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Doslovný přepis bez AI halucinací</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 5. INTERACTIVE CLINICAL SIMULATOR          -->
+  <!-- ========================================== -->
+  <section id="simulator" class="py-20 sm:py-28 bg-sand-100/60 dark:bg-[#0c1412] relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-sage-700 dark:text-emerald-400">ŽIVÝ INTERAKTIVNÍ TEST</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 dark:text-white tracking-tight">
+          Vyzkoušejte si, jak Synapse promění mluvené slovo v klinický zápis
+        </h2>
+        <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+          Zvolte klinický případ níže, spusťte simulaci audia, přepínejte mezi SOAP, BIRP nebo lékařskou zprávou a sledujte okamžitou neutralizaci citlivých údajů (PII).
+        </p>
+      </div>
+
+      <!-- Case Selectors -->
+      <div class="flex flex-wrap items-center justify-center gap-2 mb-8">
+        <button
+          type="button"
+          data-case="case1"
+          class="simulator-case-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer bg-sage-800 text-white dark:bg-emerald-700"
+        >
+          KBT: Panická porucha a agorafobie
+        </button>
+        <button
+          type="button"
+          data-case="case2"
+          class="simulator-case-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer bg-white text-slate-700 dark:bg-[#141f1c] dark:text-slate-300 hover:bg-sand-200 dark:hover:bg-[#1b2b26]"
+        >
+          Psychiatrie: Depresivní syndrom & titrace
+        </button>
+        <button
+          type="button"
+          data-case="case3"
+          class="simulator-case-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer bg-white text-slate-700 dark:bg-[#141f1c] dark:text-slate-300 hover:bg-sand-200 dark:hover:bg-[#1b2b26]"
+        >
+          Psychoterapie: Syndrom vyhoření
+        </button>
+      </div>
+
+      <!-- Simulator Interactive Workspace Card -->
+      <div class="bg-white dark:bg-[#131d1a] border border-sage-200 dark:border-sage-800 rounded-3xl shadow-xl overflow-hidden max-w-5xl mx-auto">
+        
+        <!-- Deck Header: Audio Player & Status Controls -->
+        <div class="p-4 sm:p-5 bg-sand-50 dark:bg-[#162320] border-b border-sage-200 dark:border-sage-800 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center space-x-3">
+            <!-- Play / Pause Button -->
+            <button
+              id="simulatorPlayBtn"
+              type="button"
+              class="w-10 h-10 rounded-xl bg-sage-800 hover:bg-sage-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white flex items-center justify-center shadow-xs transition-transform active:scale-95 cursor-pointer"
+              title="Přehrát / Pozastavit vzorové audio sezení"
+            >
+              <svg id="simulatorPlayIcon" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+              <svg id="simulatorPauseIcon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            </button>
+
+            <!-- Animated Waveform Bars -->
+            <div class="flex items-center space-x-1 h-8 text-sage-600 dark:text-emerald-400 px-2">
+              <span class="wave-bar h-2"></span>
+              <span class="wave-bar h-4"></span>
+              <span class="wave-bar h-6"></span>
+              <span class="wave-bar h-3"></span>
+              <span class="wave-bar h-7"></span>
+              <span class="wave-bar h-5"></span>
+              <span class="wave-bar h-2"></span>
+              <span class="wave-bar h-6"></span>
+              <span class="wave-bar h-4"></span>
+              <span class="wave-bar h-2"></span>
+              <span class="wave-bar h-5"></span>
+              <span class="wave-bar h-3"></span>
+            </div>
+
+            <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
+              <span id="simulatorTimer" class="font-bold text-slate-800 dark:text-white">00:00</span> / <span id="simulatorDuration">03:14</span>
+            </div>
+          </div>
+
+          <!-- Case Info Text -->
+          <div class="text-right">
+            <h4 id="simulatorCaseTitle" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-white">KBT – Panická porucha s agorafobií</h4>
+            <p id="simulatorCaseMeta" class="text-[11px] text-slate-500 dark:text-slate-400">Martin D. (42 let) | F41.0 | Délka: 03:14</p>
+          </div>
+        </div>
+
+        <!-- Split Workspace Simulator Body -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-sage-200 dark:divide-sage-800 min-h-[380px]">
+          
+          <!-- Left Column: Raw Speech & PII Anonymization -->
+          <div class="p-5 sm:p-6 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center space-x-1.5">
+                  <svg class="w-4 h-4 text-sage-600 dark:text-sage-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"/></svg>
+                  <span>1. Doslovný přepis (Verbatim)</span>
+                </span>
+
+                <!-- PII Toggle Switch -->
+                <label class="flex items-center space-x-2 cursor-pointer select-none">
+                  <input id="simulatorPiiToggle" type="checkbox" checked class="sr-only peer">
+                  <div class="w-8 h-4 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-600 relative"></div>
+                  <span class="text-[11px] font-semibold text-slate-600 dark:text-slate-300">PII filtrace</span>
+                </label>
+              </div>
+
+              <!-- Raw Text Box -->
+              <div id="simulatorRawText" class="p-4 rounded-xl bg-sand-50/70 dark:bg-[#101916] border border-sage-200/80 dark:border-sage-800/80 text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed max-h-72 overflow-y-auto">
+                <!-- Injected via main.js -->
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-center space-x-2">
+              <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+              <span>Pre-Flight kontrola proběhla na vašem zařízení. Osobní identifikátory neopustily prohlížeč.</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Formatted Clinical Synthesis -->
+          <div class="p-5 sm:p-6 space-y-4 flex flex-col justify-between bg-sand-50/30 dark:bg-[#121c19]/50">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center space-x-1.5">
+                  <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  <span>2. Asistovaná AI syntéza</span>
+                </span>
+
+                <!-- Format Switcher Pills -->
+                <div class="flex items-center space-x-1 bg-white dark:bg-[#162320] p-1 rounded-xl border border-sage-200 dark:border-sage-800 text-xs">
+                  <button type="button" data-format="soap" class="simulator-format-btn px-2.5 py-1 rounded-lg border border-sage-800 bg-sage-50 text-sage-900 dark:bg-emerald-950/40 dark:border-emerald-500 dark:text-emerald-200 font-semibold cursor-pointer">
+                    SOAP
+                  </button>
+                  <button type="button" data-format="birp" class="simulator-format-btn px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">
+                    BIRP
+                  </button>
+                  <button type="button" data-format="report" class="simulator-format-btn px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">
+                    Zpráva
+                  </button>
+                </div>
+              </div>
+
+              <!-- Synthesized Content Box -->
+              <div id="simulatorSynthText" class="p-4 rounded-xl bg-white dark:bg-[#0e1614] border border-sage-200/80 dark:border-sage-800/80 text-xs sm:text-sm text-slate-800 dark:text-slate-100 leading-relaxed font-sans max-h-72 overflow-y-auto space-y-2">
+                <!-- Injected via main.js -->
+              </div>
+            </div>
+
+            <!-- Export Buttons Simulated -->
+            <div class="flex items-center justify-between pt-2">
+              <span class="text-[11px] text-slate-400">Připraveno pro export do ambulantního software</span>
+              <div class="flex items-center space-x-2">
+                <button type="button" class="px-3 py-1.5 rounded-lg border border-sage-300 dark:border-sage-700 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-800 flex items-center space-x-1 cursor-pointer">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                  <span>Kopírovat</span>
+                </button>
+                <button type="button" class="px-3 py-1.5 rounded-lg bg-sage-800 dark:bg-emerald-600 text-white text-xs font-semibold hover:bg-sage-900 flex items-center space-x-1 cursor-pointer">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                  <span>Export do .DOCX</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 6. HOW IT WORKS: WORKFLOW TIMELINE        -->
+  <!-- ========================================== -->
+  <section id="workflow" class="py-20 sm:py-28 bg-white dark:bg-[#0f1715] border-t border-sage-200/80 dark:border-sage-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+        <span class="text-xs font-bold uppercase tracking-wider text-sage-700 dark:text-emerald-400">JEDNODUCHÝ PRACOVNÍ POSTUP</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 dark:text-white tracking-tight">
+          Od rozhovoru s pacientem k hotové zprávě ve 4 krocích
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+          Žádné složité nastavování. Aplikace respektuje vaše stávající návyky a hladce doplňuje váš denní klinický režim.
+        </p>
+      </div>
+
+      <!-- Interactive Stepper Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Steps Navigation List (Left) -->
+        <div class="lg:col-span-5 space-y-3">
+          <button
+            type="button"
+            data-step="step1"
+            class="workflow-step-btn w-full text-left p-4 rounded-2xl border border-sage-800 bg-sage-50 text-sage-900 dark:bg-emerald-950/40 dark:border-emerald-500 dark:text-emerald-200 transition-all cursor-pointer shadow-xs"
+          >
+            <div class="flex items-center space-x-3">
+              <span class="w-8 h-8 rounded-xl bg-sage-800 dark:bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shrink-0">1</span>
+              <div>
+                <h4 class="text-sm font-bold">1. Diktát sezení na mobilu v ordinaci</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Přirozené mluvené slovo přímo během nebo po sezení</p>
+              </div>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            data-step="step2"
+            class="workflow-step-btn w-full text-left p-4 rounded-2xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-sand-50 dark:hover:bg-[#162320] transition-all cursor-pointer"
+          >
+            <div class="flex items-center space-x-3">
+              <span class="w-8 h-8 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center shrink-0">2</span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white">2. Okamžitý přenos na počítač (WebSockets)</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Přijdete k monitoru a text je již připraven</p>
+              </div>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            data-step="step3"
+            class="workflow-step-btn w-full text-left p-4 rounded-2xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-sand-50 dark:hover:bg-[#162320] transition-all cursor-pointer"
+          >
+            <div class="flex items-center space-x-3">
+              <span class="w-8 h-8 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center shrink-0">3</span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white">3. PII anonymizace a AI syntéza</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Výběr šablony (SOAP, KBT) s garancí ochrany dat</p>
+              </div>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            data-step="step4"
+            class="workflow-step-btn w-full text-left p-4 rounded-2xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-sand-50 dark:hover:bg-[#162320] transition-all cursor-pointer"
+          >
+            <div class="flex items-center space-x-3">
+              <span class="w-8 h-8 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center shrink-0">4</span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white">4. Export do Wordu či ambulantního SW</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Jedním klikem do PC DOKTOR, SmartMedix nebo .DOCX</p>
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <!-- Step Visual Preview (Right) -->
+        <div class="lg:col-span-7 bg-sand-50 dark:bg-[#14201c] rounded-3xl border border-sage-200 dark:border-sage-800 p-6 sm:p-8 space-y-4">
+          <div class="flex items-center justify-between">
+            <span id="workflowBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-sage-200 dark:bg-emerald-950 text-sage-900 dark:text-emerald-300">MOBILNÍ DIKTÁT</span>
+            <span class="text-xs text-slate-400 font-mono">Reálný snímek aplikace</span>
+          </div>
+
+          <h3 id="workflowTitle" class="text-xl font-bold font-serif text-slate-900 dark:text-white">
+            1. Diktát sezení na mobilu v ordinaci
+          </h3>
+          <p id="workflowDesc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Lékař nebo terapeut mluví přirozeným tempem do mobilu či tabletu. Aplikace běží jako offline PWA i bez signálu a živě vizualizuje zvukovou stopu. Žádné zdržování klienta.
+          </p>
+
+          <div class="rounded-2xl border border-sage-200 dark:border-sage-800 overflow-hidden shadow-lg bg-black cursor-pointer lightbox-trigger" data-img="/screenshots/mobile-editor.png" data-title="Mobilní diktát v aplikaci Synapse">
+            <img
+              id="workflowImage"
+              src="/screenshots/mobile-editor.png"
+              alt="Náhled kroku v aplikaci Synapse"
+              class="w-full h-auto object-cover max-h-[380px] transition-opacity duration-300"
+            >
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 7. CORE FEATURES GRID                      -->
+  <!-- ========================================== -->
+  <section id="funkce" class="py-20 sm:py-28 bg-sand-50/60 dark:bg-[#0c1412]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+        <span class="text-xs font-bold uppercase tracking-wider text-sage-700 dark:text-emerald-400">ARCHITEKTURA & FUNKCE</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 dark:text-white tracking-tight">
+          Postaveno pro náročné medicínské standardy a ochranu soukromí
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+          Každá komponenta byla navržena ve spolupráci s psychology a lékaři s důrazem na nulové narušení chodu ordinace a absolutní bezpečí dat.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        
+        <!-- Feature 1: Zero-Knowledge FLE -->
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#131d1a] border border-sage-200/90 dark:border-sage-800/90 shadow-xs hover:shadow-md transition-shadow space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Zero-Knowledge FLE AES-256-GCM</h3>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Data jsou šifrována přímo ve vašem prohlížeči klíčem odvozeným z vašeho master hesla pomocí PBKDF2 (100 000 iterací). Klíč nikdy neopouští vaše zařízení. Ani provozovatel cloudu nemá k textům přístup.
+          </p>
+        </div>
+
+        <!-- Feature 2: Multi-Locale PII Guardrails -->
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#131d1a] border border-sage-200/90 dark:border-sage-800/90 shadow-xs hover:shadow-md transition-shadow space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-sage-100 dark:bg-sage-900/60 text-sage-800 dark:text-sage-300 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Multi-Locale PII Guardrails (CZ, SK, PL)</h3>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Před odesláním do AI probíhá deterministická neutralizace: Rodná čísla s Modulo 11 kontrolou, polský PESEL, bankovní účty ČNB / NBP, IBAN ISO 13616 a skloňování českých příjmení v 1.–7. pádě.
+          </p>
+        </div>
+
+        <!-- Feature 3: Persistent Client Context -->
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#131d1a] border border-sage-200/90 dark:border-sage-800/90 shadow-xs hover:shadow-md transition-shadow space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Trvalý klinický kontext klienta</h3>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Dlouhodobé diagnózy, trvalá medikace a stanovené terapeutické cíle se ukládají k profilu klienta a automaticky se předávají jako kontext do každé nové syntézy. Zápisy jsou tak vždy konzistentní.
+          </p>
+        </div>
+
+        <!-- Feature 4: Hashtag Search & SessionTags -->
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#131d1a] border border-sage-200/90 dark:border-sage-800/90 shadow-xs hover:shadow-md transition-shadow space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/></svg>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Hashtagy & Témata sezení (#SessionTags)</h3>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            AI automaticky detekuje klíčová témata rozhovoru (např. <code>#úzkost</code>, <code>#nespavost</code>, <code>#expozice</code>). Fulltextové vyhledávání v kartotéce okamžitě filtruje celou historii klienta podle štítků.
+          </p>
+        </div>
+
+        <!-- Feature 5: Batch Processing -->
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#131d1a] border border-sage-200/90 dark:border-sage-800/90 shadow-xs hover:shadow-md transition-shadow space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-teal-100 dark:bg-teal-950/80 text-teal-700 dark:text-teal-300 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7C5 4 4 5 4 7zm0 4h16M9 4v16"/></svg>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Dávkové zpracování (Batch Processing)</h3>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Máte po celém dni 5 surových diktátů? Spusťte hromadné dávkové zpracování. Systém postupně zanalyzuje všechna sezení a vygeneruje čisté zprávy, zatímco vy odcházíte domů.
+          </p>
+        </div>
+
+        <!-- Feature 6: Tombstones & Safe Trash -->
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#131d1a] border border-sage-200/90 dark:border-sage-800/90 shadow-xs hover:shadow-md transition-shadow space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Dvoufázový koš & UUID náhrobky (Tombstones)</h3>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Žádné nechtěné smazání. Spisy se přesouvají do koše s možností okamžité obnovy. Synchronizace mazání probíhá přes striktní UUID náhrobky – nový klient se stejným jménem nikdy nezpůsobí konflikt.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 8. INTERACTIVE ROI / TIME SAVINGS CALC     -->
+  <!-- ========================================== -->
+  <section id="kalkulacka" class="py-20 sm:py-28 bg-white dark:bg-[#0f1715] border-t border-sage-200/80 dark:border-sage-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+        <span class="text-xs font-bold uppercase tracking-wider text-sage-700 dark:text-emerald-400">KALKULAČKA NÁVRATNOSTI (ROI)</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 dark:text-white tracking-tight">
+          Kolik hodin a peněz vám Synapse ušetří každý měsíc?
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+          Nastavte posuvníky podle své praxe. Spočítejte si reálnou úsporu času, který můžete věnovat sobě, rodině nebo dalším klientům.
+        </p>
+      </div>
+
+      <div class="max-w-4xl mx-auto bg-sand-50 dark:bg-[#131d1a] border border-sage-200 dark:border-sage-800 rounded-3xl p-6 sm:p-10 shadow-lg">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
+          
+          <!-- Sliders Form (Left) -->
+          <div class="space-y-6">
+            
+            <!-- Slider 1: Clients per week -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label for="calcClientsSlider" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+                  Počet sezení / klientů týdně:
+                </label>
+                <span id="calcClientsVal" class="text-sm font-extrabold text-sage-800 dark:text-emerald-300 font-mono">20 sezení</span>
+              </div>
+              <input id="calcClientsSlider" type="range" min="5" max="50" step="1" value="20" class="w-full h-2 bg-sage-200 dark:bg-sage-800 rounded-lg">
+              <div class="flex justify-between text-[10px] text-slate-400">
+                <span>5 sezení</span>
+                <span>25</span>
+                <span>50 sezení</span>
+              </div>
+            </div>
+
+            <!-- Slider 2: Current manual time -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label for="calcTimeSlider" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+                  Čas na zápis bez Synapse:
+                </label>
+                <span id="calcTimeVal" class="text-sm font-extrabold text-sage-800 dark:text-emerald-300 font-mono">20 min</span>
+              </div>
+              <input id="calcTimeSlider" type="range" min="10" max="40" step="5" value="20" class="w-full h-2 bg-sage-200 dark:bg-sage-800 rounded-lg">
+              <div class="flex justify-between text-[10px] text-slate-400">
+                <span>10 minut</span>
+                <span>25 min</span>
+                <span>40 minut</span>
+              </div>
+            </div>
+
+            <!-- Slider 3: Hourly Rate -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label for="calcRateSlider" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+                  Vaše terapeutická hodinová sazba:
+                </label>
+                <span id="calcRateVal" class="text-sm font-extrabold text-sage-800 dark:text-emerald-300 font-mono">1 400 Kč/hod</span>
+              </div>
+              <input id="calcRateSlider" type="range" min="800" max="3000" step="100" value="1400" class="w-full h-2 bg-sage-200 dark:bg-sage-800 rounded-lg">
+              <div class="flex justify-between text-[10px] text-slate-400">
+                <span>800 Kč</span>
+                <span>1 800 Kč</span>
+                <span>3 000 Kč</span>
+              </div>
+            </div>
+
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 italic">
+              * Model vychází z průměrného zkrácení doby dokumentace o 75 % (z 20 min na ~5 min se Synapse).
+            </p>
+          </div>
+
+          <!-- Dynamic Output KPI Card (Right) -->
+          <div class="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-sage-900 to-sage-950 text-white shadow-xl space-y-6">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">VÝSLEDEK VAŠÍ ÚSPORY</span>
+            
+            <div class="space-y-4">
+              <div class="border-b border-sage-800 pb-3">
+                <span class="text-xs text-slate-300">Ušetřený čas každý měsíc:</span>
+                <div class="flex items-baseline space-x-2 mt-1">
+                  <span id="calcMonthlyHoursOut" class="text-3xl sm:text-4xl font-serif font-bold text-emerald-300">26 hodin</span>
+                  <span id="calcMonthlyDaysOut" class="text-xs text-slate-300 font-mono">(= 3,2 prac. dny)</span>
+                </div>
+              </div>
+
+              <div class="border-b border-sage-800 pb-3">
+                <span class="text-xs text-slate-300">Ušetřený čas týdně:</span>
+                <div id="calcWeeklyHoursOut" class="text-xl sm:text-2xl font-bold font-serif text-white mt-0.5">
+                  6,0 hod
+                </div>
+              </div>
+
+              <div>
+                <span class="text-xs text-slate-300">Finanční hodnota získaného času měsíčně:</span>
+                <div id="calcMonthlySavingsOut" class="text-2xl sm:text-3xl font-serif font-bold text-amber-300 mt-0.5">
+                  36 400 Kč
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <a
+                href="#cenik"
+                class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm text-center block transition-all shadow-md"
+              >
+                Začít šetřit čas od 490 Kč / měsíc &rarr;
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 9. REAL SCREENSHOT GALLERY & APP TOUR       -->
+  <!-- ========================================== -->
+  <section class="py-20 sm:py-28 bg-sand-100/50 dark:bg-[#0c1412] border-t border-sage-200/80 dark:border-sage-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+        <span class="text-xs font-bold uppercase tracking-wider text-sage-700 dark:text-emerald-400">REÁLNÉ ROZHRANÍ APLIKACE</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 dark:text-white tracking-tight">
+          Nahlédněte do skutečného prostředí Synapse
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+          Žádné vymyšlené grafiky. Autentické snímky z klinické verze v tmavém i světlém režimu. Klikněte pro zvětšení.
+        </p>
+      </div>
+
+      <!-- Screenshot Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Shot 1 -->
+        <div class="rounded-2xl border border-sage-200 dark:border-sage-800 bg-white dark:bg-[#131d1a] overflow-hidden shadow-xs hover:shadow-lg transition-all group cursor-pointer lightbox-trigger" data-img="/screenshots/workspace-dark.png" data-title="Pracovní plocha a kartotéka klientů v tmavém režimu">
+          <div class="overflow-hidden aspect-video bg-black">
+            <img src="/screenshots/workspace-dark.png" alt="Pracovní plocha v tmavém režimu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="p-4">
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Kartotéka a editor v tmavém režimu</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Ergonomický tmavý režim pro minimální únavu očí při večerní práci.</p>
+          </div>
+        </div>
+
+        <!-- Shot 2 -->
+        <div class="rounded-2xl border border-sage-200 dark:border-sage-800 bg-white dark:bg-[#131d1a] overflow-hidden shadow-xs hover:shadow-lg transition-all group cursor-pointer lightbox-trigger" data-img="/screenshots/ai-synthesis.png" data-title="Asistovaná AI syntéza sezení (Interní zápis)">
+          <div class="overflow-hidden aspect-video bg-black">
+            <img src="/screenshots/ai-synthesis.png" alt="AI syntéza sezení" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="p-4">
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Klinická AI syntéza sezení</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Automatická extrakce anamnézy, nálezu a terapeutického plánu.</p>
+          </div>
+        </div>
+
+        <!-- Shot 3 -->
+        <div class="rounded-2xl border border-sage-200 dark:border-sage-800 bg-white dark:bg-[#131d1a] overflow-hidden shadow-xs hover:shadow-lg transition-all group cursor-pointer lightbox-trigger" data-img="/screenshots/split-view.png" data-title="Split-View: Doslovný přepis a strukturovaný zápis vedle sebe">
+          <div class="overflow-hidden aspect-video bg-black">
+            <img src="/screenshots/split-view.png" alt="Split-View zobrazení" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="p-4">
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Split-View porovnání</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Možnost kdykoliv ověřit AI zápis oproti doslovnému přepisu vedle sebe.</p>
+          </div>
+        </div>
+
+        <!-- Shot 4 -->
+        <div class="rounded-2xl border border-sage-200 dark:border-sage-800 bg-white dark:bg-[#131d1a] overflow-hidden shadow-xs hover:shadow-lg transition-all group cursor-pointer lightbox-trigger" data-img="/screenshots/persistent-context.png" data-title="Trvalý klinický kontext klienta (anamnézy, medikace, cíle)">
+          <div class="overflow-hidden aspect-video bg-black">
+            <img src="/screenshots/persistent-context.png" alt="Trvalý klinický kontext" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="p-4">
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Trvalý kontext a anamnéza</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Dlouhodobý kontext se automaticky promítá do každého nového sezení.</p>
+          </div>
+        </div>
+
+        <!-- Shot 5 -->
+        <div class="rounded-2xl border border-sage-200 dark:border-sage-800 bg-white dark:bg-[#131d1a] overflow-hidden shadow-xs hover:shadow-lg transition-all group cursor-pointer lightbox-trigger" data-img="/screenshots/batch-processing.png" data-title="Hromadné dávkové zpracování sezení (Batch Queue)">
+          <div class="overflow-hidden aspect-video bg-black">
+            <img src="/screenshots/batch-processing.png" alt="Dávkové zpracování" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="p-4">
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Dávkové zpracování více nahrávek</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Fronta úloh pro automatické zpracování celého odpoledne na jedno kliknutí.</p>
+          </div>
+        </div>
+
+        <!-- Shot 6 -->
+        <div class="rounded-2xl border border-sage-200 dark:border-sage-800 bg-white dark:bg-[#131d1a] overflow-hidden shadow-xs hover:shadow-lg transition-all group cursor-pointer lightbox-trigger" data-img="/screenshots/analytics.png" data-title="Statistiky a měření efektivity ordinace">
+          <div class="overflow-hidden aspect-video bg-black">
+            <img src="/screenshots/analytics.png" alt="Statistiky a analytika" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="p-4">
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Anonymní telemetrie efektivity</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Přehled o ušetřeném čase a poměru manuálních úprav bez úniku dat.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 10. GDPR & ZERO-KNOWLEDGE SECURITY         -->
+  <!-- ========================================== -->
+  <section id="bezpecnost" class="py-20 sm:py-28 bg-white dark:bg-[#0f1715] border-t border-sage-200/80 dark:border-sage-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <div class="lg:col-span-6 space-y-6">
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">BEZPEČNOST & PRÁVNÍ SOULAD</span>
+          <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
+            Zdravotnická data patří lékaři a pacientovi. Nikomu jinému.
+          </h2>
+          <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+            Při vývoji Synapse jsme jako hlavní cíl stanovili splnění nejpřísnějších norem pro nakládání se zvláštní kategorií osobních údajů (čl. 9 GDPR).
+          </p>
+
+          <div class="space-y-4 pt-2">
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white">Elektronická Zpracovatelská smlouva (DPA čl. 28 GDPR)</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Přímo v nastavení aplikace můžete elektronicky uzavřít závaznou DPA smlouvu s IČO vaší ambulance a jménem lékaře.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white">Striktní zákaz trénování AI na datech</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Používáme Enterprise API rozhraní s garantovanou doložkou Zero-Data-Retention: vstupy se neukládají ani nepoužívají pro učení modelů.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white">Dvoufaktorové ověření (TOTP 2FA)</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Podpora Microsoft Authenticator i Google Authenticator. Přihlášení zůstává bezpečné i v případě kompromitace hesla.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Flow Box (Right) -->
+        <div class="lg:col-span-6 bg-sand-50 dark:bg-[#131d1a] border border-sage-200 dark:border-sage-800 rounded-3xl p-6 sm:p-8 space-y-6">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-white flex items-center space-x-2">
+            <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <span>Architektura ochrany dat v 5 bodech</span>
+          </h3>
+
+          <ol class="space-y-3.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+            <li class="flex items-start space-x-2.5">
+              <span class="w-5 h-5 rounded-full bg-sage-800 dark:bg-emerald-700 text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span>
+              <span><strong>Hlasové nahrávky:</strong> Dočasný soubor je na serveru držen pouze po dobu přepisu a v bloku <code>finally</code> je okamžitě smazán z disku.</span>
+            </li>
+            <li class="flex items-start space-x-2.5">
+              <span class="w-5 h-5 rounded-full bg-sage-800 dark:bg-emerald-700 text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span>
+              <span><strong>Pre-Flight PII anonymizace:</strong> Z prohlížeče odchází pouze anonymizovaný text; rodná čísla a jména jsou nahrazena neutrálními placeholdery.</span>
+            </li>
+            <li class="flex items-start space-x-2.5">
+              <span class="w-5 h-5 rounded-full bg-sage-800 dark:bg-emerald-700 text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span>
+              <span><strong>Klientský klíč AES-256-GCM:</strong> V cloudu jsou data uložena výhradně v šifrované podobě. Server nemá dešifrovací klíč.</span>
+            </li>
+            <li class="flex items-start space-x-2.5">
+              <span class="w-5 h-5 rounded-full bg-sage-800 dark:bg-emerald-700 text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">4</span>
+              <span><strong>Offline provoz:</strong> Pokud nemáte internet, kartotéka i exporty do DOCX fungují lokálně v IndexedDB.</span>
+            </li>
+            <li class="flex items-start space-x-2.5">
+              <span class="w-5 h-5 rounded-full bg-sage-800 dark:bg-emerald-700 text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">5</span>
+              <span><strong>Automatické odhlášení:</strong> Detekce nečinnosti po 120 minutách automaticky uzamkne přístup k trezoru.</span>
+            </li>
+          </ol>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 11. TRANSPARENT PRICING TIERS              -->
+  <!-- ========================================== -->
+  <section id="cenik" class="py-20 sm:py-28 bg-sand-50/60 dark:bg-[#0c1412] border-t border-sage-200/80 dark:border-sage-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-sage-700 dark:text-emerald-400">PŘEHLEDNÝ A FÉROVÝ CENÍK</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 dark:text-white tracking-tight">
+          Investice, která se vám vrátí hned během prvního dne
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+          Žádné skryté poplatky. Začněte zdarma a přejděte na PRO tarif, až budete připraveni.
+        </p>
+
+        <!-- Billing Period Toggle -->
+        <div class="pt-4 flex items-center justify-center space-x-3 select-none">
+          <span class="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300">Měsíčně</span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input id="billingPeriodToggle" type="checkbox" class="sr-only peer">
+            <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-sage-800 dark:peer-checked:bg-emerald-600"></div>
+          </label>
+          <div class="flex items-center space-x-1.5">
+            <span class="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300">Ročně</span>
+            <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">UŠETŘÍTE 2 MĚSÍCE (-20 %)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
+        
+        <!-- Tier 1: FREE -->
+        <div class="p-7 sm:p-8 rounded-3xl bg-white dark:bg-[#131d1a] border border-sage-200 dark:border-sage-800 flex flex-col justify-between space-y-6 shadow-xs">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">FREE TIER</h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Základní</span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Pro vyzkoušení v praxi nebo menší praxe s několika klienty týdně.</p>
+            
+            <div class="pt-2">
+              <span class="text-4xl font-serif font-bold text-slate-900 dark:text-white">0 Kč</span>
+              <span class="text-xs text-slate-500"> / napořád</span>
+            </div>
+
+            <ul class="space-y-2.5 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-sage-100 dark:border-sage-850">
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span><strong>30 sezení měsíčně</strong> zdarma</span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>1:1 Verbatim přepis řeči</span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>SOAP & BIRP klinické formáty</span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Kompletní Zero-Knowledge šifrování</span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Export do Wordu (.DOCX)</span></li>
+            </ul>
+          </div>
+
+          <a
+            href="https://clinical-transcribe.onrender.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full py-3 rounded-xl border border-sage-300 dark:border-sage-700 text-xs font-semibold text-slate-800 dark:text-white text-center hover:bg-sand-100 dark:hover:bg-slate-800 transition-colors block"
+          >
+            Začít zdarma
+          </a>
+        </div>
+
+        <!-- Tier 2: PRO THERAPIST (Highlighted) -->
+        <div class="p-7 sm:p-8 rounded-3xl bg-white dark:bg-[#152420] border-2 border-sage-800 dark:border-emerald-500 flex flex-col justify-between space-y-6 shadow-xl relative scale-100 md:scale-105 z-10">
+          <div class="absolute -top-3.5 left-1/2 transform -translate-x-1/2">
+            <span class="px-3.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-sage-800 dark:bg-emerald-600 text-white shadow-sm">NEJPOPULÁRNĚJŠÍ VOLBA</span>
+          </div>
+
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">PRO THERAPIST</h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">Neomezeně</span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Pro plně vytížené terapeuty a lékaře, kteří chtějí maximální efektivitu a synchronizaci.</p>
+            
+            <div class="pt-2">
+              <span id="proPriceAmount" class="text-4xl font-serif font-bold text-slate-900 dark:text-white">490 Kč</span>
+              <span id="proPricePeriod" class="text-xs text-slate-500"> / měsíc</span>
+              <p id="proBilledNote" class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Fakturováno měsíčně bez závazků, zrušení kdykoliv</p>
+            </div>
+
+            <ul class="space-y-2.5 text-xs text-slate-700 dark:text-slate-200 pt-2 border-t border-sage-100 dark:border-sage-850">
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span><strong>Neomezený počet sezení a minut</strong></span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span><strong>Real-Time Cloud Sync (mobil &harr; PC)</strong></span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Přednostní AI model Gemini 3.8 Flash</span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Neomezené vlastní šablony zápisů</span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Hromadné dávkové zpracování nahrávek</span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Elektronická Zpracovatelská smlouva (DPA)</span></li>
+            </ul>
+          </div>
+
+          <a
+            href="https://clinical-transcribe.onrender.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full py-3.5 rounded-xl bg-sage-800 hover:bg-sage-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm text-center shadow-md hover:shadow-lg transition-all block"
+          >
+            Aktivovat tarif PRO
+          </a>
+        </div>
+
+        <!-- Tier 3: CLINIC & TEAMS -->
+        <div class="p-7 sm:p-8 rounded-3xl bg-white dark:bg-[#131d1a] border border-sage-200 dark:border-sage-800 flex flex-col justify-between space-y-6 shadow-xs">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">KLINIKA & TÝMY</h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300">Týmové</span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Pro psychologická centra, psychiatrické kliniky a skupinové praxe.</p>
+            
+            <div class="pt-2">
+              <span class="text-3xl font-serif font-bold text-slate-900 dark:text-white">Individuální</span>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Dle počtu terapeutů a lékařů</p>
+            </div>
+
+            <ul class="space-y-2.5 text-xs text-slate-600 dark:text-slate-300 pt-2 border-t border-sage-100 dark:border-sage-850">
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Vše z tarifu PRO Therapist</span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Sdílená kartotéka se správou oprávnění</span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Týmový auditní log přístupů ke spisům</span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Individuální DPA a fakturace na firmu</span></li>
+              <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Přednostní technická podpora (SLA)</span></li>
+            </ul>
+          </div>
+
+          <a
+            href="mailto:podpora@synapse-app.cz?subject=Poptavka%20licence%20pro%20kliniku"
+            class="w-full py-3 rounded-xl border border-sage-300 dark:border-sage-700 text-xs font-semibold text-slate-800 dark:text-white text-center hover:bg-sand-100 dark:hover:bg-slate-800 transition-colors block"
+          >
+            Kontaktovat nás pro nabídku
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 12. FREQUENTLY ASKED QUESTIONS (FAQ)       -->
+  <!-- ========================================== -->
+  <section id="faq" class="py-20 sm:py-28 bg-white dark:bg-[#0f1715] border-t border-sage-200/80 dark:border-sage-800/80">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center space-y-4 mb-14">
+        <span class="text-xs font-bold uppercase tracking-wider text-sage-700 dark:text-emerald-400">OTÁZKY & ODPOVĚDI</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 dark:text-white tracking-tight">
+          Vše, co lékaře a terapeuty zajímá
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+          Máte další dotaz? Napište nám kdykoliv na <a href="mailto:podpora@synapse-app.cz" class="underline text-sage-800 dark:text-emerald-400">podpora@synapse-app.cz</a>.
+        </p>
+      </div>
+
+      <!-- Accordion List -->
+      <div class="space-y-4">
+        
+        <!-- FAQ 1 -->
+        <div class="faq-item rounded-2xl border border-sage-200 dark:border-sage-800 bg-sand-50/50 dark:bg-[#131d1a] overflow-hidden">
+          <button type="button" class="faq-trigger w-full p-5 text-left flex items-center justify-between cursor-pointer focus:outline-none">
+            <span class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Jak je technicky zajištěno, že nikdo nevidí data mých pacientů?</span>
+            <svg class="faq-chevron w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-content p-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-sage-100 dark:border-sage-850">
+            Synapse využívá princip <strong>Zero-Knowledge Field-Level Encryption</strong>. Klíč k dešifrování se generuje přímo ve vašem prohlížeči (na vašem mobilu či PC) z vašeho hesla pomocí standardu PBKDF2. Na server se odesílají pouze data zašifrovaná algoritmem AES-256-GCM. Server ani provozovatel databáze nemá dešifrovací klíč a v databázi vidí pouze nečitelný šifrovaný shluk bajtů.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item rounded-2xl border border-sage-200 dark:border-sage-800 bg-sand-50/50 dark:bg-[#131d1a] overflow-hidden">
+          <button type="button" class="faq-trigger w-full p-5 text-left flex items-center justify-between cursor-pointer focus:outline-none">
+            <span class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Trénuje se umělá inteligence na mých klinických nahrávkách a zápisech?</span>
+            <svg class="faq-chevron w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-content p-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-sage-100 dark:border-sage-850">
+            <strong>Jednoznačně NE.</strong> Využíváme výhradně placená podniková API rozhraní (Enterprise Tier), která smluvně garantují doložku Zero-Data-Retention. Vaše vstupy nejsou ukládány na servery poskytovatelů modelů ani používány k jejich dalšímu trénování. Navíc před jakýmkoliv odesláním do AI probíhá klientská anonymizace PII.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item rounded-2xl border border-sage-200 dark:border-sage-800 bg-sand-50/50 dark:bg-[#131d1a] overflow-hidden">
+          <button type="button" class="faq-trigger w-full p-5 text-left flex items-center justify-between cursor-pointer focus:outline-none">
+            <span class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Mohu výstupy přenést do svého stávajícího ambulantního softwaru?</span>
+            <svg class="faq-chevron w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-content p-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-sage-100 dark:border-sage-850">
+            <strong>Ano, naprosto jednoduše.</strong> Hotový strukturovaný zápis můžete zkopírovat do schránky jedním klikem a vložit (Ctrl+V) do libovolného ambulantního programu (např. PC DOKTOR, SmartMedix, CGM MEDISTAR, Amicus a další). K dispozici je také přímý export do formátu Microsoft Word (.docx).
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item rounded-2xl border border-sage-200 dark:border-sage-800 bg-sand-50/50 dark:bg-[#131d1a] overflow-hidden">
+          <button type="button" class="faq-trigger w-full p-5 text-left flex items-center justify-between cursor-pointer focus:outline-none">
+            <span class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Potřebuji instalovat nějaký program do počítače?</span>
+            <svg class="faq-chevron w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-content p-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-sage-100 dark:border-sage-850">
+            <strong>Nemusíte instalovat vůbec nic.</strong> Synapse je moderní webová aplikace (Progressive Web App). Funguje v jakémkoliv moderním prohlížeči (Google Chrome, Safari, Microsoft Edge, Firefox) na PC, Macu, Androidu i iPhonu. Můžete si ji však jedním klikem přidat na plochu jako běžnou ikonu.
+          </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item rounded-2xl border border-sage-200 dark:border-sage-800 bg-sand-50/50 dark:bg-[#131d1a] overflow-hidden">
+          <button type="button" class="faq-trigger w-full p-5 text-left flex items-center justify-between cursor-pointer focus:outline-none">
+            <span class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Co se stane, když mi v ordinaci vypadne internet?</span>
+            <svg class="faq-chevron w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-content p-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-sage-100 dark:border-sage-850">
+            Aplikace funguje v plnohodnotném offline režimu díky lokální databázi IndexedDB. Celá vaše kartotéka zůstává dostupná i bez připojení k síti. Jakmile se internet obnoví, změny se automaticky synchronizují na pozadí.
+          </div>
+        </div>
+
+        <!-- FAQ 6 -->
+        <div class="faq-item rounded-2xl border border-sage-200 dark:border-sage-800 bg-sand-50/50 dark:bg-[#131d1a] overflow-hidden">
+          <button type="button" class="faq-trigger w-full p-5 text-left flex items-center justify-between cursor-pointer focus:outline-none">
+            <span class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Jaký mikrofon je pro nahrávání v ordinaci nejvhodnější?</span>
+            <svg class="faq-chevron w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-content p-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-sage-100 dark:border-sage-850">
+            V naprosté většině případů plně postačuje <strong>vestavěný mikrofon v mobilním telefonu</strong> položený na pracovním stole. Pokud diktujete ze stolního PC, doporučujeme jakýkoliv kvalitní směrový USB mikrofon (např. Rode, Jabra) nebo stolní handsfree.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 13. BOTTOM CALL TO ACTION BANNER           -->
+  <!-- ========================================== -->
+  <section class="py-20 sm:py-24 bg-gradient-to-br from-sage-900 via-sage-800 to-sage-950 text-white relative overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
+      <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+        VYZKOUŠEJTE JEŠTĚ DNES
+      </span>
+      <h2 class="text-3xl sm:text-5xl font-serif font-bold tracking-tight">
+        Začněte psát klinické zápisy o 80 % rychleji
+      </h2>
+      <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+        Připojte se k moderním lékařům a terapeutům, kteří se zbavili večerní administrativy. 30 sezení měsíčně máte zdarma.
+      </p>
+
+      <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href="https://clinical-transcribe.onrender.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full sm:w-auto px-8 py-4 rounded-2xl text-base font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-xl transition-all cursor-pointer"
+        >
+          Spustit aplikaci zdarma &rarr;
+        </a>
+        <a
+          href="#kalkulacka"
+          class="w-full sm:w-auto px-6 py-4 rounded-2xl text-base font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all"
+        >
+          Spočítat úsporu času
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 14. FOOTER                                 -->
+  <!-- ========================================== -->
+  <footer class="bg-sand-50 dark:bg-[#080d0c] border-t border-sage-200 dark:border-sage-800 py-12 sm:py-16 text-xs text-slate-500 dark:text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-12 border-b border-sage-200 dark:border-sage-850">
+        
+        <!-- Brand Info -->
+        <div class="space-y-3 md:col-span-1">
+          <div class="flex items-center space-x-2">
+            <span class="font-serif font-bold text-lg text-slate-900 dark:text-white">Synapse</span>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sage-200 dark:bg-sage-800 text-slate-800 dark:text-emerald-300">CLINICAL</span>
+          </div>
+          <p class="leading-relaxed">
+            Klinický přepis mluveného slova a asistovaná AI syntéza sezení pro psychology, terapeuty a lékaře.
+          </p>
+          <p class="text-[11px] font-mono">Verze 3.0 (Zero-Knowledge Edition)</p>
+        </div>
+
+        <!-- Links Navigation -->
+        <div>
+          <h4 class="font-bold text-slate-900 dark:text-slate-200 mb-3 uppercase tracking-wider text-[11px]">Navigace</h4>
+          <ul class="space-y-2">
+            <li><a href="#funkce" class="hover:text-slate-800 dark:hover:text-white">Klíčové funkce</a></li>
+            <li><a href="#simulator" class="hover:text-slate-800 dark:hover:text-white">Interaktivní simulátor</a></li>
+            <li><a href="#workflow" class="hover:text-slate-800 dark:hover:text-white">Jak to funguje</a></li>
+            <li><a href="#kalkulacka" class="hover:text-slate-800 dark:hover:text-white">Kalkulačka úspory</a></li>
+            <li><a href="#cenik" class="hover:text-slate-800 dark:hover:text-white">Ceník a tarify</a></li>
+          </ul>
+        </div>
+
+        <!-- Security & Legal -->
+        <div>
+          <h4 class="font-bold text-slate-900 dark:text-slate-200 mb-3 uppercase tracking-wider text-[11px]">Zabezpečení & Právo</h4>
+          <ul class="space-y-2">
+            <li><a href="#bezpecnost" class="hover:text-slate-800 dark:hover:text-white">Zpracovatelská smlouva (DPA)</a></li>
+            <li><a href="#bezpecnost" class="hover:text-slate-800 dark:hover:text-white">Soulad s GDPR čl. 9</a></li>
+            <li><a href="#bezpecnost" class="hover:text-slate-800 dark:hover:text-white">Zero-Knowledge šifrování</a></li>
+            <li><a href="https://clinical-transcribe.onrender.com/dpa.html" target="_blank" class="hover:text-slate-800 dark:hover:text-white">Vzor DPA v aplikaci</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact & App -->
+        <div>
+          <h4 class="font-bold text-slate-900 dark:text-slate-200 mb-3 uppercase tracking-wider text-[11px]">Podpora & Kontakt</h4>
+          <ul class="space-y-2">
+            <li>E-mail: <a href="mailto:podpora@synapse-app.cz" class="underline hover:text-slate-800 dark:hover:text-white">podpora@synapse-app.cz</a></li>
+            <li>Live aplikace: <a href="https://clinical-transcribe.onrender.com/" target="_blank" class="underline hover:text-slate-800 dark:hover:text-white">clinical-transcribe.onrender.com</a></li>
+            <li>Testovací server: <a href="https://clinical-transcribe-test.onrender.com/" target="_blank" class="underline hover:text-slate-800 dark:hover:text-white">testovací prostředí</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
+        <div>
+          &copy; 2026 Synapse Clinical Transcribe. Všechna práva vyhrazena.
+        </div>
+        <div class="flex items-center space-x-4">
+          <span>GDPR Compliant</span>
+          <span>&bull;</span>
+          <span>Zero-Data-Retention AI</span>
+          <span>&bull;</span>
+          <span>Hosted in EU</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- 15. SCREENSHOT LIGHTBOX MODAL              -->
+  <!-- ========================================== -->
+  <div id="lightboxModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex flex-col justify-center items-center p-4 transition-opacity">
+    <div class="max-w-6xl w-full flex items-center justify-between mb-3 text-white">
+      <h3 id="lightboxTitle" class="text-sm sm:text-base font-bold font-serif">Snímek aplikace</h3>
+      <button id="closeLightboxBtn" type="button" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white cursor-pointer" aria-label="Zavřít náhled">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="max-w-6xl max-h-[85vh] rounded-2xl overflow-hidden border border-white/20 shadow-2xl bg-black">
+      <img id="lightboxImg" src="" alt="Zvětšený snímek aplikace Synapse" class="w-full h-auto max-h-[85vh] object-contain">
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="/src/scripts/main.js"></script>
+</body>
+</html>

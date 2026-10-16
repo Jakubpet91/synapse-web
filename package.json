@@ -1,0 +1,25 @@
+{
+  "name": "synapse-web",
+  "version": "1.0.0",
+  "description": "Oficiální prezentační a marketingový web pro klinickou aplikaci Synapse Clinical Transcribe",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.4.8"
+  },
+  "keywords": [
+    "synapse",
+    "clinical-transcribe",
+    "psychoterapie",
+    "klinicky-prepis",
+    "ai-medicinska-syntéza",
+    "zero-knowledge",
+    "gdpr"
+  ],
+  "author": "Jakub Petříček",
+  "license": "ISC"
+}
