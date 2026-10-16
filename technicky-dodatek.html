@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="cs" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technický dodatek a bezpečnostní specifikace | Synapse</title>
+  <meta name="description" content="Detailní technická a kryptografická specifikace pro IT administrátory, nemocniční správce a pověřence pro ochranu osobních údajů (DPO).">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            sand: { 50: '#faf9f6', 100: '#f4f1ea', 200: '#e8e2d5' },
+            sage: { 100: '#e7ece8', 200: '#cfdbd2', 700: '#385344', 800: '#283c31', 900: '#1a2720', 950: '#0e1713' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-sand-50 dark:bg-[#0c1412] text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased">
+
+  <!-- Header -->
+  <header class="border-b border-sage-200 dark:border-sage-800 bg-white/90 dark:bg-[#0e1614]/90 sticky top-0 z-30 backdrop-blur-md">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <a href="./index.html" class="flex items-center space-x-2 text-sage-900 dark:text-white font-serif font-bold text-lg">
+        <span class="w-7 h-7 rounded-lg bg-sage-800 dark:bg-emerald-700 text-white flex items-center justify-center text-sm">&Psi;</span>
+        <span>Synapse</span>
+        <span class="text-xs font-sans font-normal text-slate-500 ml-2">/ Technický dodatek</span>
+      </a>
+      <div class="flex items-center space-x-3">
+        <button onclick="window.print()" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center space-x-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          <span>Vytisknout / PDF</span>
+        </button>
+        <a href="./index.html" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-sage-800 dark:bg-emerald-600 text-white hover:bg-sage-900 transition-colors">
+          &larr; Zpět na web
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Document Body -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-12 flex-grow">
+    
+    <!-- Title Section -->
+    <div class="border-b border-sage-200 dark:border-sage-800 pb-8 space-y-3">
+      <span class="text-xs font-mono font-bold uppercase tracking-wider text-sage-700 dark:text-emerald-400">BEZPEČNOSTNÍ & ARCHITEKTURNÍ AUDIT</span>
+      <h1 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 dark:text-white">
+        Technický dodatek pro IT správce, bezpečnostní auditory a pověřence GDPR (DPO)
+      </h1>
+      <p class="text-sm text-slate-600 dark:text-slate-400">
+        Tento dokument slouží jako technická příloha ke Zpracovatelské smlouvě (DPA) a specifikuje kryptografické standardy, bezpečnostní protokoly a datové toky aplikace <strong>Synapse Clinical Transcribe</strong>.
+      </p>
+    </div>
+
+    <!-- Section 1: End-to-End Encryption -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-bold font-serif text-slate-900 dark:text-white flex items-center space-x-2">
+        <span class="w-6 h-6 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">1</span>
+        <span>Klientské šifrování na úrovni polí (Zero-Knowledge Field-Level Encryption)</span>
+      </h2>
+      <div class="p-5 rounded-2xl bg-white dark:bg-[#131d1a] border border-sage-200 dark:border-sage-800 text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-3 leading-relaxed">
+        <p>
+          Aplikace Synapse implementuje princip <strong>Zero-Knowledge</strong>. Server ani databázový backend nemají přístup k otevřeným medicínským ani osobním údajům pacientů.
+        </p>
+        <ul class="list-disc list-inside space-y-1.5 pl-2 text-xs font-mono text-slate-600 dark:text-slate-400">
+          <li><strong>Symetrické šifrování:</strong> AES-256-GCM (Galois/Counter Mode) s 96-bitovým náhodným inicializačním vektorem (IV) a 128-bitovým autentizačním tagem na každé šifrované pole.</li>
+          <li><strong>Derivace klientského klíče:</strong> PBKDF2 (Password-Based Key Derivation Function 2) s HMAC-SHA-256 a 100&nbsp;000 iteracemi. Solení probíhá přes kryptograficky bezpečný generátor náhodných čísel (<code>crypto.getRandomValues</code>, 16 bajtů).</li>
+          <li><strong>Implementace:</strong> Nativní standard W3C Web Cryptography API (<code>window.crypto.subtle</code>) běžící izolovaně v klientském sandboxu prohlížeče.</li>
+          <li><strong>Ochrana klíče:</strong> Klientský dešifrovací klíč je držen výhradně v transientní paměti RAM po dobu aktivní relace a nikdy se neodesílá po síti ani neukládá na server.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 2: Real-time Transport & Offline Persistence -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-bold font-serif text-slate-900 dark:text-white flex items-center space-x-2">
+        <span class="w-6 h-6 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">2</span>
+        <span>Transportní bezpečnost a lokální perzistence</span>
+      </h2>
+      <div class="p-5 rounded-2xl bg-white dark:bg-[#131d1a] border border-sage-200 dark:border-sage-800 text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-3 leading-relaxed">
+        <p>
+          Přenos dat mezi klientským zařízením (mobil, tablet, stolní PC) a cloudovou infrastrukturou probíhá výhradně šifrovanými kanály.
+        </p>
+        <ul class="list-disc list-inside space-y-1.5 pl-2 text-xs font-mono text-slate-600 dark:text-slate-400">
+          <li><strong>Protokoly v tranzitu:</strong> TLS 1.3 s HSTS (HTTP Strict Transport Security).</li>
+          <li><strong>Real-time synchronizace:</strong> Zabezpečené WebSockets (WSS) s per-message autentizací a přenosem výhradně předem zašifrovaných payloadů.</li>
+          <li><strong>Offline-First úložiště:</strong> Klientská databáze IndexedDB pro lokální práci bez připojení k síti. Všechny záznamy v IndexedDB jsou uloženy v šifrovaném formátu.</li>
+          <li><strong>Správa konfliktů:</strong> Distribuovaná správa mazání a synchronizace prostřednictvím UUIDv4 náhrobků (Tombstones), které eliminují kolize při práci z více zařízení současně.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 3: AI Inference & Zero-Retention -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-bold font-serif text-slate-900 dark:text-white flex items-center space-x-2">
+        <span class="w-6 h-6 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">3</span>
+        <span>Zpracování umělou inteligencí a doložka Zero-Data-Retention</span>
+      </h2>
+      <div class="p-5 rounded-2xl bg-white dark:bg-[#131d1a] border border-sage-200 dark:border-sage-800 text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-3 leading-relaxed">
+        <p>
+          Pro generování strukturovaných zápisů (SOAP, BIRP, Lékařská zpráva) je využíváno výhradně placené podnikové API (Enterprise Tier).
+        </p>
+        <ul class="list-disc list-inside space-y-1.5 pl-2 text-xs font-mono text-slate-600 dark:text-slate-400">
+          <li><strong>Zákaz trénování modelů:</strong> Poskytovatel AI modelů smluvně garantuje, že žádná data předaná přes API nejsou použita pro učení, doladění (fine-tuning) ani validaci algoritmů.</li>
+          <li><strong>Zero-Data-Retention:</strong> Vstupy i výstupy jsou zpracovány výhradně v operační paměti pro potřeby inference a po odeslání odpovědi klientovi nejsou perzistentně ukládány.</li>
+          <li><strong>Životní cyklus audia:</strong> Hlasové nahrávky jsou po dokončení přepisu na serveru okamžitě a neodvolatelně smazány v bloku <code>finally</code>. Na serveru nevzniká žádný audio archiv.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 4: GDPR Compliance -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-bold font-serif text-slate-900 dark:text-white flex items-center space-x-2">
+        <span class="w-6 h-6 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">4</span>
+        <span>Soulad s GDPR a ochrana zvláštní kategorie údajů</span>
+      </h2>
+      <div class="p-5 rounded-2xl bg-white dark:bg-[#131d1a] border border-sage-200 dark:border-sage-800 text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-3 leading-relaxed">
+        <p>
+          Architektura plně respektuje právní rámec Nařízení (EU) 2016/679 (GDPR) se zvláštním zřetelem na údaje o zdravotním stavu.
+        </p>
+        <ul class="list-disc list-inside space-y-1.5 pl-2 text-xs font-mono text-slate-600 dark:text-slate-400">
+          <li><strong>Právní základ:</strong> Čl. 9 odst. 2 písm. h) GDPR (poskytování zdravotní nebo sociální péče a léčby).</li>
+          <li><strong>Zpracovatelská smlouva (DPA):</strong> Uzavírána elektronicky přímo v rozhraní aplikace v souladu s čl. 28 GDPR.</li>
+          <li><strong>Řízení přístupu a autentizace:</strong> Podpora vícefaktorové autentizace (TOTP dle RFC 6238) kompatibilní s Google Authenticator a Microsoft Authenticator.</li>
+          <li><strong>Session Inactivity Timeout:</strong> Automatické uzamčení klientského trezoru po 120 minutách nečinnosti uživatele.</li>
+          <li><strong>Lokalita infrastruktury:</strong> Datacentra v rámci Evropské unie (Frankfurt, Německo).</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Technical Summary Table -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-bold font-serif text-slate-900 dark:text-white">Přehled technických parametrů</h2>
+      <div class="overflow-x-auto rounded-2xl border border-sage-200 dark:border-sage-800">
+        <table class="w-full text-left text-xs font-mono">
+          <thead class="bg-sand-100 dark:bg-[#16231f] text-slate-700 dark:text-slate-300 border-b border-sage-200 dark:border-sage-800">
+            <tr>
+              <th class="p-3">Oblast</th>
+              <th class="p-3">Použitý standard</th>
+              <th class="p-3">Poznámka / Garance</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-sage-200 dark:divide-sage-850 bg-white dark:bg-[#111917] text-slate-600 dark:text-slate-300">
+            <tr>
+              <td class="p-3 font-bold text-slate-800 dark:text-white">Šifrování textů</td>
+              <td class="p-3">AES-256-GCM</td>
+              <td class="p-3">Zero-Knowledge, klíč odvozen v prohlížeči</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-800 dark:text-white">Derivace klíče</td>
+              <td class="p-3">PBKDF2 (HMAC-SHA-256)</td>
+              <td class="p-3">100 000 iterací, 16 B salt</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-800 dark:text-white">Síťový transport</td>
+              <td class="p-3">TLS 1.3, WSS</td>
+              <td class="p-3">End-to-end šifrování v tranzitu</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-800 dark:text-white">AI Inference</td>
+              <td class="p-3">Enterprise Tier API</td>
+              <td class="p-3">Zero-Data-Retention, zákaz trénování</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-800 dark:text-white">Lokální úložiště</td>
+              <td class="p-3">IndexedDB</td>
+              <td class="p-3">Ukládá výhradně zašifrovaná data</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-800 dark:text-white">2FA Autentizace</td>
+              <td class="p-3">TOTP (RFC 6238)</td>
+              <td class="p-3">Ochrana uživatelského účtu</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-sage-200 dark:border-sage-800 py-6 bg-white dark:bg-[#0e1614] text-xs text-center text-slate-500">
+    <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span>&copy; 2026 Synapse Clinical Transcribe. Všechna práva vyhrazena.</span>
+      <a href="./index.html" class="text-sage-800 dark:text-emerald-400 font-semibold hover:underline">&larr; Návrat na hlavní stránku</a>
+    </div>
+  </footer>
+
+</body>
+</html>

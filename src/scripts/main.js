@@ -220,7 +220,7 @@ function initClinicalSimulator() {
     if (caseTitle) caseTitle.textContent = c.title;
     if (caseMeta) caseMeta.textContent = `${c.patient} | ${c.diagnosis} | Délka: ${c.audioDuration}`;
 
-    // Render Raw Verbatim Text
+    // Render Raw Speech Transcript
     if (rawTextContainer) {
       rawTextContainer.innerHTML = c.rawTranscript;
     }
@@ -361,21 +361,21 @@ function initWorkflowStepper() {
   const STEP_DATA = {
     step1: {
       title: '1. Diktát sezení na mobilu v ordinaci',
-      desc: 'Lékař nebo terapeut mluví přirozeným tempem do mobilu či tabletu. Aplikace běží jako offline PWA i bez signálu a živě vizualizuje zvukovou stopu. Žádné zdržování klienta.',
+      desc: 'Lékař nebo terapeut mluví přirozeným tempem do mobilu či tabletu. Aplikace funguje spolehlivě i bez signálu a živě snímá váš hlas. Žádné zdržování klienta.',
       image: './screenshots/mobile-editor.png',
       badge: 'MOBILNÍ DIKTÁT'
     },
     step2: {
-      title: '2. Okamžitý přenos do počítače přes WebSockets',
-      desc: 'Jakmile se vrátíte k pracovnímu stolu, text je již v reálném čase přenesen na obrazovce stolního počítače. Žádné posílání e-mailem, žádné kabely, nulová manuální práce.',
+      title: '2. Okamžitý přenos do počítače',
+      desc: 'Jakmile se vrátíte k pracovnímu stolu, text je již připraven na obrazovce počítače. Žádné posílání e-mailem, žádné kabely, nulová manuální práce.',
       image: './screenshots/workspace-dark.png',
-      badge: 'REAL-TIME CLOUD SYNC'
+      badge: 'OKAMŽITÉ PROPOJENÍ'
     },
     step3: {
       title: '3. Asistovaná AI syntéza sezení',
-      desc: 'Pokročilý medicínský prompt engine převede surový diktát do strukturovaného zápisu dle zvoleného schématu (SOAP, BIRP, Zpráva). Zpracování probíhá přes Enterprise API bez ukládání na serverech a bez trénování modelů.',
+      desc: 'Chytrý klinický asistent převede rozhovor do přehledného zápisu dle zvolené šablony (SOAP, BIRP, Zpráva). Data jsou chráněna lékařským tajemstvím a umělá inteligence se na nich nikdy neučí.',
       image: './screenshots/ai-synthesis.png',
-      badge: 'STRUKTUROVANÁ AI'
+      badge: 'PŘEHLEDNÝ ZÁPIS'
     },
     step4: {
       title: '4. Export do Wordu (.docx) či ambulantního softwaru',
